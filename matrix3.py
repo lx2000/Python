@@ -3,10 +3,6 @@ import numpy
 from vector3 import vector3
 
 class matrix3:
-	x = vector3(1,0,0)
-	y = vector3(0,1,0)
-	z = vector3(0,0,1)
-
 	def __init__(self, x, y, z):
 		self.x = x
 		self.y = y
@@ -40,13 +36,44 @@ class matrix3:
 		inv = numpy.linalg.inv(array)
 		return inv
 		
+	@classmethod
+	def Identity(cls):
+		x = vector3(1, 0, 0)
+		y = vector3(0, 1, 0)
+		z = vector3(0, 0, 1)
+		return cls(x, y, z)
+	
+	@classmethod
+	def MakeLookAt(cls, forward, up):
+		x = up.cross(forward)
+		y = forward.cross(x)
+		z = forward
+		
+		mat = matrix3.Identity()
+		if x.len() > 0.001:
+			x.normalize()
+			y.normalize()
+			z.normalize()
+			mat = cls(x, y, z)
+		return mat
+		
+'''
+forward = vector3(7.10119629,-25.3019409,-23.1168213)
+up = vector3(0.726603448,-0.341014385,0.596453547)
+m1 = matrix3.Identity()
+print(m1)
+mat = matrix3.MakeLookAt(forward, up)
+print(mat)
+
 x = vector3(12,44,5)
 y = vector3(1,4,9)
 z = vector3(12,4,57)
 
 #x += y
 #print(x*y)
+'''
 
+'''
 m1 = matrix3(x,y,z)
 print(m1)
 print("*")
@@ -56,6 +83,7 @@ print(m2)
 print("=")
 print(m1*m2)
 print(m2*m1)
+'''
 #print(m1)
 #print(m1)
 #print(m1+m2)
